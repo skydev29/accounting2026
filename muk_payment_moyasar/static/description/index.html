@@ -185,17 +185,6 @@
     <br/>This is also listed in the module's <code>requirements.txt</code> for automated deployment environments.
 </div>
 
-<h2>Technical Overview</h2>
-
-<ul>
-    <li><strong>Payment Provider Model</strong> (<code>payment.provider</code>) — extended with Moyasar public/secret key fields and Apple Pay file storage.</li>
-    <li><strong>Payment Transaction Model</strong> (<code>payment.transaction</code>) — stores the Moyasar payment ID returned at callback for audit and reconciliation.</li>
-    <li><strong>HTTP Controller</strong> — handles the payment callback (<code>/payment-status-return</code>), frontend configuration endpoint (<code>/get/moyasar/order</code>), and Apple Pay domain file (<code>/.well-known/…</code>).</li>
-    <li><strong>Frontend JavaScript</strong> — patches Odoo's <code>PaymentForm</code> widget to intercept Moyasar flows and render the Moyasar JS widget inside a Bootstrap modal.</li>
-    <li><strong>Odoo Version:</strong> 19.0</li>
-    <li><strong>CDN:</strong> Moyasar JS/CSS loaded from CDN v1.14.0 (no local bundling required).</li>
-</ul>
-
 <h2>License</h2>
 <p>This module is released under the <strong>Odoo Proprietary License v1 (OPL-1)</strong>.
 See the <code>LICENSE</code> file for full terms.</p>
