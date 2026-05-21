@@ -3,9 +3,10 @@
     'name': 'Deferred Expenses',
     'version': '19.0.1.0.0',
     'category': 'Accounting/Accounting',
-    'author': 'Custom',
+    'author': 'muknon',
     'license': 'LGPL-3',
     'summary': 'Manage prepaid / deferred expenses with automatic amortisation schedules',
+    'description': 'See static/description/index.html',
     'depends': ['account', 'analytic', 'mail'],
     'data': [
         'security/ir.model.access.csv',
