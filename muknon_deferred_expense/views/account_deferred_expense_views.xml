@@ -2,11 +2,11 @@
 <odoo>
 
     <!-- ── Form view ──────────────────────────────────────────────────────── -->
-    <record id="view_deferred_revenue_form" model="ir.ui.view">
-        <field name="name">account.deferred.revenue.form</field>
-        <field name="model">account.deferred.revenue</field>
+    <record id="view_deferred_expense_form" model="ir.ui.view">
+        <field name="name">muknon.deferred.expense.form</field>
+        <field name="model">muknon.deferred.expense</field>
         <field name="arch" type="xml">
-            <form string="Deferred Revenue">
+            <form string="Deferred Expense">
                 <header>
                     <button name="action_confirm"
                             string="Confirm"
@@ -20,7 +20,7 @@
                     <button name="action_reset_draft"
                             string="Reset to Draft"
                             type="object"
-                            invisible="state != 'in_progress'"/>
+                            invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,in_progress,closed"/>
                 </header>
@@ -43,13 +43,15 @@
                         </h1>
                     </div>
 
+                    <!-- Info banner in draft state -->
+                    <div class="alert alert-info" role="alert"
+                         invisible="state != 'draft'">
+                        Confirm this record to automatically generate the recognition schedule.
+                    </div>
+
                     <group>
                         <group string="General">
                             <field name="template_id"
-                                   readonly="state != 'draft'"/>
-                            <field name="partner_id"
-                                   readonly="state != 'draft'"/>
-                            <field name="invoice_line_id"
                                    readonly="state != 'draft'"/>
                             <field name="currency_id"
                                    groups="base.group_multi_currency"
@@ -70,17 +72,9 @@
                         </group>
                     </group>
 
-                    <group string="Accounting">
-                        <field name="journal_id"
-                               readonly="state != 'draft'"/>
-                        <field name="deferred_account_id"
-                               readonly="state != 'draft'"/>
-                        <field name="recognition_account_id"
-                               readonly="state != 'draft'"/>
-                    </group>
-
                     <notebook>
-                        <page string="Recognition Lines">
+                        <!-- Tab 1: Recognition Schedule -->
+                        <page string="Recognition Schedule">
                             <field name="line_ids">
                                 <list editable="bottom">
                                     <field name="date"/>
@@ -97,9 +91,41 @@
                                             invisible="state == 'posted'"/>
                                 </list>
                             </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="recognized_amount"
+                                       string="Recognized"
+                                       class="oe_subtotal_footer_separator"/>
+                                <field name="remaining_amount"
+                                       string="Remaining"/>
+                            </group>
                         </page>
-                        <page string="Description">
-                            <field name="description" placeholder="Additional details…"/>
+
+                        <!-- Tab 2: Settings -->
+                        <page string="Settings">
+                            <group>
+                                <group string="Accounting">
+                                    <field name="journal_id"
+                                           readonly="state != 'draft'"/>
+                                    <field name="deferred_account_id"
+                                           readonly="state != 'draft'"/>
+                                    <field name="expense_account_id"
+                                           readonly="state != 'draft'"/>
+                                </group>
+                                <group string="Other">
+                                    <field name="partner_id"
+                                           readonly="state != 'draft'"/>
+                                    <field name="bill_line_id"
+                                           readonly="state != 'draft'"/>
+                                    <field name="analytic_distribution"
+                                           widget="analytic_distribution"
+                                           readonly="state != 'draft'"/>
+                                </group>
+                            </group>
+                            <group string="Description">
+                                <field name="description"
+                                       nolabel="1"
+                                       placeholder="Additional details…"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -109,20 +135,20 @@
     </record>
 
     <!-- ── List view ──────────────────────────────────────────────────────── -->
-    <record id="view_deferred_revenue_list" model="ir.ui.view">
-        <field name="name">account.deferred.revenue.list</field>
-        <field name="model">account.deferred.revenue</field>
+    <record id="view_deferred_expense_list" model="ir.ui.view">
+        <field name="name">muknon.deferred.expense.list</field>
+        <field name="model">muknon.deferred.expense</field>
         <field name="arch" type="xml">
-            <list string="Deferred Revenue"
+            <list string="Deferred Expenses"
                   decoration-muted="state == 'closed'"
                   decoration-info="state == 'draft'">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
-                <field name="total_amount"/>
-                <field name="recognized_amount"/>
-                <field name="remaining_amount"/>
+                <field name="total_amount" sum="Total"/>
+                <field name="recognized_amount" sum="Recognized"/>
+                <field name="remaining_amount" sum="Remaining"/>
                 <field name="currency_id" column_invisible="True"/>
                 <field name="state" widget="badge"
                        decoration-info="state == 'draft'"
@@ -134,15 +160,15 @@
     </record>
 
     <!-- ── Search view ────────────────────────────────────────────────────── -->
-    <record id="view_deferred_revenue_search" model="ir.ui.view">
-        <field name="name">account.deferred.revenue.search</field>
-        <field name="model">account.deferred.revenue</field>
+    <record id="view_deferred_expense_search" model="ir.ui.view">
+        <field name="name">muknon.deferred.expense.search</field>
+        <field name="model">muknon.deferred.expense</field>
         <field name="arch" type="xml">
-            <search string="Deferred Revenue">
+            <search string="Deferred Expenses">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="template_id"/>
-                <!-- Filters -->
+                <!-- State filters -->
                 <filter string="Draft" name="filter_draft"
                         domain="[('state', '=', 'draft')]"/>
                 <filter string="In Progress" name="filter_in_progress"
@@ -150,35 +176,38 @@
                 <filter string="Closed" name="filter_closed"
                         domain="[('state', '=', 'closed')]"/>
                 <separator/>
-                <filter string="My Company" name="filter_my_company"
-                        domain="[('company_id', '=', allowed_company_ids[0])]"/>
+                <!-- Overdue: has pending lines with date < today -->
+                <filter string="Overdue" name="filter_overdue"
+                        domain="[('line_ids.date', '&lt;', context_today().strftime('%Y-%m-%d')),
+                                 ('line_ids.move_id', '=', False),
+                                 ('state', '=', 'in_progress')]"/>
                 <separator/>
+                <!-- Group by -->
                 <filter string="Partner" name="group_partner"
                         context="{'group_by': 'partner_id'}"/>
                 <filter string="Status" name="group_state"
                         context="{'group_by': 'state'}"/>
-                <filter string="Start Date" name="group_date_start"
+                <filter string="Start Month" name="group_date_start"
                         context="{'group_by': 'date_start:month'}"/>
-                <filter string="Template" name="group_template"
-                        context="{'group_by': 'template_id'}"/>
             </search>
         </field>
     </record>
 
     <!-- ── Action ─────────────────────────────────────────────────────────── -->
-    <record id="action_deferred_revenue" model="ir.actions.act_window">
-        <field name="name">Deferred Revenue</field>
-        <field name="res_model">account.deferred.revenue</field>
+    <record id="action_deferred_expense" model="ir.actions.act_window">
+        <field name="name">Deferred Expenses</field>
+        <field name="res_model">muknon.deferred.expense</field>
         <field name="view_mode">list,form</field>
-        <field name="search_view_id" ref="view_deferred_revenue_search"/>
+        <field name="search_view_id" ref="view_deferred_expense_search"/>
         <field name="context">{'search_default_filter_in_progress': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create your first deferred revenue record
+                Create your first deferred expense record
             </p>
             <p>
-                Deferred revenue lets you spread income recognition over a period
-                and automatically post journal entries on the recognition dates.
+                Deferred expenses let you spread prepaid costs over their
+                benefit period and automatically post journal entries on
+                the recognition dates.
             </p>
         </field>
     </record>

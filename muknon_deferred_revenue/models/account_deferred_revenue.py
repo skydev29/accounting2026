@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 
 
 class AccountDeferredRevenue(models.Model):
-    _name = 'account.deferred.revenue'
+    _name = 'muknon.deferred.revenue'
     _description = 'Deferred Revenue'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date_start desc, id desc'
@@ -34,7 +34,7 @@ class AccountDeferredRevenue(models.Model):
 
     # ── Links ─────────────────────────────────────────────────────────────────
     template_id = fields.Many2one(
-        comodel_name='account.deferred.revenue.template',
+        comodel_name='muknon.deferred.revenue.template',
         string='Template',
         ondelete='restrict',
     )
@@ -94,7 +94,7 @@ class AccountDeferredRevenue(models.Model):
 
     # ── Lines & moves ─────────────────────────────────────────────────────────
     line_ids = fields.One2many(
-        comodel_name='account.deferred.revenue.line',
+        comodel_name='muknon.deferred.revenue.line',
         inverse_name='deferred_id',
         string='Recognition Lines',
     )
@@ -282,7 +282,7 @@ class AccountDeferredRevenue(models.Model):
                     lines_vals[-1]['amount'] + diff
                 )
 
-        self.env['account.deferred.revenue.line'].create(lines_vals)
+        self.env['muknon.deferred.revenue.line'].create(lines_vals)
 
     # ──────────────────────────────────────────────────────────────────────────
     # Scheduled action
@@ -295,7 +295,7 @@ class AccountDeferredRevenue(models.Model):
         and post their journal entries automatically.
         """
         today = fields.Date.today()
-        lines = self.env['account.deferred.revenue.line'].search([
+        lines = self.env['muknon.deferred.revenue.line'].search([
             ('date', '<=', today),
             ('state', '=', 'pending'),
             ('deferred_id.state', '=', 'in_progress'),

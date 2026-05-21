@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deferred_expense_template_user,muknon.deferred.expense.template user,model_muknon_deferred_expense_template,account.group_account_user,1,0,0,0
+access_deferred_expense_template_manager,muknon.deferred.expense.template manager,model_muknon_deferred_expense_template,account.group_account_manager,1,1,1,1
+access_deferred_expense_user,muknon.deferred.expense user,model_muknon_deferred_expense,account.group_account_user,1,1,1,0
+access_deferred_expense_manager,muknon.deferred.expense manager,model_muknon_deferred_expense,account.group_account_manager,1,1,1,1
+access_deferred_expense_line_user,muknon.deferred.expense.line user,model_muknon_deferred_expense_line,account.group_account_user,1,1,1,0
+access_deferred_expense_line_manager,muknon.deferred.expense.line manager,model_muknon_deferred_expense_line,account.group_account_manager,1,1,1,1

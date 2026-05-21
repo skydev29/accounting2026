@@ -3,15 +3,15 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
-class AccountDeferredRevenueLine(models.Model):
-    _name = 'account.deferred.revenue.line'
-    _description = 'Deferred Revenue Line'
+class AccountDeferredExpenseLine(models.Model):
+    _name = 'muknon.deferred.expense.line'
+    _description = 'Deferred Expense Line'
     _order = 'date asc'
 
     # ── Relations ─────────────────────────────────────────────────────────────
     deferred_id = fields.Many2one(
-        comodel_name='account.deferred.revenue',
-        string='Deferred Revenue',
+        comodel_name='muknon.deferred.expense',
+        string='Deferred Expense',
         required=True,
         ondelete='cascade',
         index=True,
@@ -72,21 +72,25 @@ class AccountDeferredRevenueLine(models.Model):
 
     def action_post_entry(self):
         """
-        Create and post a journal entry for this recognition line:
-          DR  deferred_account_id   (reduces the deferred-revenue liability)
-          CR  recognition_account_id (recognises revenue)
+        Create and post a journal entry that recognises one period of expense:
+          DR  expense_account_id   (recognise the expense in P&L)
+          CR  deferred_account_id  (reduce the prepaid/asset balance)
         """
         for line in self:
             if line.state == 'posted':
-                continue
+                raise UserError(
+                    _('Recognition line dated %s is already posted.')
+                    % line.date.strftime('%d/%m/%Y')
+                )
             deferred = line.deferred_id
+
             if not deferred.journal_id:
                 raise UserError(
-                    _('No journal defined on deferred revenue "%s".') % deferred.name
+                    _('No journal defined on deferred expense "%s".') % deferred.name
                 )
-            if not deferred.deferred_account_id or not deferred.recognition_account_id:
+            if not deferred.expense_account_id or not deferred.deferred_account_id:
                 raise UserError(
-                    _('Deferred or recognition account is missing on "%s".') % deferred.name
+                    _('Expense or prepaid account is missing on "%s".') % deferred.name
                 )
 
             move_vals = {
@@ -96,18 +100,19 @@ class AccountDeferredRevenueLine(models.Model):
                 'ref': deferred.name,
                 'company_id': deferred.company_id.id,
                 'line_ids': [
-                    # DR – deferred revenue account (liability decreases)
+                    # DR – expense account (recognise the cost)
                     (0, 0, {
                         'name': deferred.name,
-                        'account_id': deferred.deferred_account_id.id,
+                        'account_id': deferred.expense_account_id.id,
                         'debit': line.amount,
                         'credit': 0.0,
                         'currency_id': deferred.currency_id.id,
+                        'analytic_distribution': deferred.analytic_distribution or False,
                     }),
-                    # CR – recognition / revenue account
+                    # CR – prepaid/asset account (reduce the asset)
                     (0, 0, {
                         'name': deferred.name,
-                        'account_id': deferred.recognition_account_id.id,
+                        'account_id': deferred.deferred_account_id.id,
                         'debit': 0.0,
                         'credit': line.amount,
                         'currency_id': deferred.currency_id.id,

@@ -7,7 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 
 
 class AccountDeferredExpense(models.Model):
-    _name = 'account.deferred.expense'
+    _name = 'muknon.deferred.expense'
     _description = 'Deferred Expense'
     _order = 'date_start desc, name'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'analytic.mixin']
@@ -24,7 +24,7 @@ class AccountDeferredExpense(models.Model):
 
     # ── Relations ─────────────────────────────────────────────────────────────
     template_id = fields.Many2one(
-        comodel_name='account.deferred.expense.template',
+        comodel_name='muknon.deferred.expense.template',
         string='Template',
         ondelete='set null',
     )
@@ -79,7 +79,7 @@ class AccountDeferredExpense(models.Model):
 
     # ── Lines ─────────────────────────────────────────────────────────────────
     line_ids = fields.One2many(
-        comodel_name='account.deferred.expense.line',
+        comodel_name='muknon.deferred.expense.line',
         inverse_name='deferred_id',
         string='Recognition Schedule',
         copy=False,
@@ -310,7 +310,7 @@ class AccountDeferredExpense(models.Model):
                 'amount': amount,
             })
 
-        self.env['account.deferred.expense.line'].create(line_vals)
+        self.env['muknon.deferred.expense.line'].create(line_vals)
 
     # ──────────────────────────────────────────────────────────────────────────
     # Scheduled action
@@ -323,7 +323,7 @@ class AccountDeferredExpense(models.Model):
         arrived, post them and log a chatter message on the parent record.
         """
         today = fields.Date.today()
-        pending_lines = self.env['account.deferred.expense.line'].search([
+        pending_lines = self.env['muknon.deferred.expense.line'].search([
             ('deferred_id.state', '=', 'in_progress'),
             ('date', '<=', today),
             ('move_id', '=', False),

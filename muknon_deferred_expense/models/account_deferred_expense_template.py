@@ -3,7 +3,7 @@ from odoo import fields, models
 
 
 class AccountDeferredExpenseTemplate(models.Model):
-    _name = 'account.deferred.expense.template'
+    _name = 'muknon.deferred.expense.template'
     _description = 'Deferred Expense Template'
     _order = 'name asc'
 

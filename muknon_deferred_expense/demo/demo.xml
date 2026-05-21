@@ -6,7 +6,7 @@
             Journal and accounts are intentionally omitted so the record
             can load in any database; fill them in after confirming the record.
         -->
-        <record id="demo_deferred_expense_01" model="account.deferred.expense">
+        <record id="demo_deferred_expense_01" model="muknon.deferred.expense">
             <field name="name">Annual Software Subscription 2026</field>
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="total_amount">12000.00</field>
