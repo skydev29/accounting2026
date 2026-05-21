@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inject Moyasar CSS/JS from CDN into every frontend page -->
+    <template id="moyasar_head_content" name="Moyasar CDN Assets" inherit_id="web.frontend_layout">
+        <xpath expr="//head" position="inside">
+            <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css"/>
+            <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&amp;features=fetch"/>
+            <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"/>
+        </xpath>
+    </template>
+
+    <!-- Hidden redirect form (kept for compatibility; not used in popup flow) -->
+    <template id="moyasar_redirect" name="Moyasar Redirect Form">
+        <form accept-charset="UTF-8" action="/moyasar/payment" method="POST">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <button type="submit">Pay</button>
+        </form>
+    </template>
+
+    <!-- Generic payment error page -->
+    <template id="payment_error_temp">
+        <div style="text-align: center; padding: 60px 40px; border-style: groove; margin: 60px 120px;">
+            <h4 style="margin-bottom: 25px;"><t t-out="error"/></h4>
+            <a t-att-href="redirect"
+               style="width: 115px; height: 25px; background: #4E9CAF; padding: 12px 50px;
+                      text-align: center; border-radius: 5px; color: white; font-weight: bold;
+                      line-height: 25px; text-decoration: none;">Go Back</a>
+        </div>
+    </template>
+
+    <!-- Reusable modal shell (injected into each payment context below) -->
+    <template id="moyasar_popup_form_template" name="Moyasar Payment Modal">
+        <div class="modal fade moyasar-modal" id="moyasarpayment" tabindex="-1"
+             role="dialog" aria-labelledby="moyasarpayment" aria-hidden="true"
+             style="z-index: 1080;">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-o-color-3">
+                    <div class="modal-header ml-auto border-0 justify-content-end">
+                        <a class="btn close-moyasar-form" data-bs-dismiss="modal">
+                            <span class="fa fa-close align-middle"/>
+                        </a>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="row m-0">
+                            <div class="col-md-12">
+                                <div class="w-100">
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <div class="tab-pane fade show active"
+                                             id="nav-moyasar-gateway" role="tabpanel"
+                                             aria-labelledby="nav-moyasar-form-tab">
+                                            <div class="mysr-form mt-5"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Website checkout page -->
+    <template id="portal_layout_moyasar_paymeneform_popup"
+              name="Moyasar Popup – Website Checkout"
+              inherit_id="website_sale.payment">
+        <xpath expr="//." position="inside">
+            <t t-if="providers_sudo or tokens_sudo">
+                <t t-set="moyasar"
+                   t-value="request.env['payment.provider'].sudo().search([('code', '=', 'moyasar')])"/>
+                <t t-if="moyasar.state in ['test', 'enabled']"
+                   t-call="muk_payment_moyasar.moyasar_popup_form_template"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Sale order portal page -->
+    <template id="payment_moyasar_sale_order_portal_template"
+              name="Moyasar – Sale Order Portal"
+              inherit_id="sale.sale_order_portal_template">
+        <xpath expr="//div[@id='quote_content']/*" position="before">
+            <input id="portal_order_id" type="hidden"
+                   t-att-value="sale_order.id"
+                   t-att-rec-name="sale_order._name"/>
+        </xpath>
+        <xpath expr="//div[@id='quote_content']/*" position="before">
+            <t t-if="providers_sudo">
+                <t t-set="moyasar"
+                   t-value="request.env['payment.provider'].sudo().search([('code', '=', 'moyasar')])"/>
+                <t t-if="moyasar.state in ['test', 'enabled']"
+                   t-call="muk_payment_moyasar.moyasar_popup_form_template"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Invoice portal page -->
+    <template id="payment_moyasar_invoice_portal_template"
+              name="Moyasar – Invoice Portal"
+              inherit_id="account.portal_invoice_page">
+        <xpath expr="//div[@id='invoice_content']/*" position="before">
+            <input id="portal_invoice_id" type="hidden"
+                   t-att-value="invoice.id"
+                   t-att-rec-name="invoice._name"/>
+            <span t-out="invoice.id"/>
+        </xpath>
+        <xpath expr="//div[@id='invoice_content']/*" position="before">
+            <t t-if="providers_sudo">
+                <t t-set="moyasar"
+                   t-value="request.env['payment.provider'].sudo().search([('code', '=', 'moyasar')])"/>
+                <t t-if="moyasar.state in ['test', 'enabled']"
+                   t-call="muk_payment_moyasar.moyasar_popup_form_template"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Generic payment.pay page (payment links) -->
+    <template id="moyasar_payment_pay_inherit"
+              name="Moyasar – Payment Pay Page"
+              inherit_id="payment.pay">
+        <xpath expr="//t[@t-call='payment.form']" position="before">
+            <input id="order_reference_prefix" type="hidden" t-att-value="reference_prefix"/>
+            <t t-if="providers_sudo">
+                <t t-set="moyasar"
+                   t-value="request.env['payment.provider'].sudo().search([('code', '=', 'moyasar')])"/>
+                <t t-if="moyasar.state in ['test', 'enabled']"
+                   t-call="muk_payment_moyasar.moyasar_popup_form_template"/>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

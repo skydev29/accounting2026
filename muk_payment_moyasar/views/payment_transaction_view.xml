@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_transaction_form_moyasar" model="ir.ui.view">
+        <field name="name">Moyasar Transaction Form</field>
+        <field name="model">payment.transaction</field>
+        <field name="inherit_id" ref="payment.payment_transaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//field[@name="provider_id"]' position='after'>
+                <field name="moyasar_payment_id"
+                       invisible="provider_code != 'moyasar'"
+                       readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

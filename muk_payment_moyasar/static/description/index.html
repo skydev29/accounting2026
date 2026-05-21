@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { color: #0097a7; border-bottom: 2px solid #0097a7; padding-bottom: 8px; }
+        h2 { color: #0097a7; margin-top: 30px; }
+        h3 { color: #555; }
+        .badge { display: inline-block; background: #0097a7; color: #fff; border-radius: 4px; padding: 3px 10px; font-size: 12px; margin-right: 6px; }
+        .badge.green  { background: #28a745; }
+        .badge.blue   { background: #007bff; }
+        .badge.orange { background: #e65100; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 6px; line-height: 1.6; }
+        .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 20px 0; }
+        .feature-card { background: #e0f7fa; border-left: 4px solid #0097a7; padding: 14px 16px; border-radius: 4px; }
+        .feature-card h3 { margin: 0 0 6px; font-size: 15px; color: #0097a7; }
+        .feature-card p  { margin: 0; font-size: 14px; line-height: 1.5; }
+        .workflow-step { display: flex; align-items: flex-start; margin-bottom: 12px; }
+        .step-num { background: #0097a7; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; margin-right: 12px; font-size: 14px; }
+        .step-text { font-size: 14px; line-height: 1.6; padding-top: 4px; }
+        .dep-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .dep-table th { background: #0097a7; color: #fff; padding: 8px 12px; text-align: left; }
+        .dep-table td { padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+        .dep-table tr:nth-child(even) td { background: #e0f7fa; }
+        .note { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 16px; border-radius: 4px; font-size: 14px; margin: 20px 0; }
+        .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+        .method-card { background: #f4f4f4; border: 1px solid #ddd; padding: 20px 16px; border-radius: 8px; text-align: center; }
+        .method-card .icon { font-size: 28px; margin-bottom: 8px; }
+        .method-card h3 { margin: 0 0 6px; font-size: 15px; color: #333; }
+        .method-card p { margin: 0; font-size: 13px; color: #666; line-height: 1.4; }
+        .config-block { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px 20px; margin-bottom: 12px; }
+        .config-block h3 { margin: 0 0 8px; font-size: 15px; color: #0097a7; }
+        .config-block p, .config-block ul { margin: 0; font-size: 14px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<img src="banner.png" alt="Moyasar Payment Gateway" style="width:100%;border-radius:8px;margin-bottom:20px;"/>
+<h1>Moyasar Payment Gateway</h1>
+
+<p>
+    <span class="badge green">Production / Stable</span>
+    <span class="badge orange">OPL-1</span>
+    <span class="badge">Odoo 19.0</span>
+    <span class="badge">Payment Providers</span>
+    <span class="badge blue">Saudi Arabia</span>
+</p>
+
+<p style="font-size:16px; color:#555; margin-top:16px;">
+    Accept online payments in Odoo through <strong>Moyasar</strong> — the leading payment gateway in
+    Saudi Arabia and the GCC. This module brings a seamless <strong>inline popup payment flow</strong>
+    to your e-commerce checkout, sales order portal, invoice portal, and payment links — no page
+    redirects, no broken user experience.
+</p>
+
+<h2>Supported Payment Methods</h2>
+
+<div class="method-grid">
+    <div class="method-card">
+        <div class="icon">💳</div>
+        <h3>Credit &amp; Debit Cards</h3>
+        <p>Visa, Mastercard, and Mada cards with 3-D Secure support.</p>
+    </div>
+    <div class="method-card">
+        <div class="icon">📱</div>
+        <h3>STC Pay</h3>
+        <p>Saudi Telecom Company's widely used mobile wallet — one tap for Saudi users.</p>
+    </div>
+    <div class="method-card">
+        <div class="icon"></div>
+        <h3>Apple Pay</h3>
+        <p>Native Apple Pay on Safari and iOS devices — instant biometric checkout.</p>
+    </div>
+</div>
+
+<h2>Key Features</h2>
+
+<div class="feature-grid">
+    <div class="feature-card">
+        <h3>Inline Popup Flow</h3>
+        <p>Payment form opens as a Bootstrap modal — customers never leave the page, improving completion rates.</p>
+    </div>
+    <div class="feature-card">
+        <h3>E-Commerce Integration</h3>
+        <p>Fully integrated into the Odoo website checkout flow via <code>website_sale</code>.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Invoice Portal Payments</h3>
+        <p>Customers can pay their invoices directly from the portal invoice page with a single click.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Sales Order Portal Payments</h3>
+        <p>Sales order portal view supports Moyasar payments alongside standard Odoo providers.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Apple Pay Domain Verification</h3>
+        <p>Automatically serves the Apple Pay merchant domain-association file at the required well-known URL — no manual deployment needed.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Transaction Tracking</h3>
+        <p>Moyasar payment IDs are stored on each Odoo transaction for easy reconciliation and support queries.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Automatic Invoice Posting</h3>
+        <p>Successful payments automatically confirm and post draft invoices — accounts receivable stays up to date instantly.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Test Mode Ready</h3>
+        <p>Ships with Moyasar sandbox credentials so you can test the full checkout flow in a staging environment before going live.</p>
+    </div>
+</div>
+
+<h2>How It Works</h2>
+
+<div class="workflow-step">
+    <div class="step-num">1</div>
+    <div class="step-text"><strong>Customer selects Moyasar</strong> at checkout or on the portal invoice/order page and clicks <em>Pay Now</em>.</div>
+</div>
+<div class="workflow-step">
+    <div class="step-num">2</div>
+    <div class="step-text"><strong>A payment modal opens</strong> — the Moyasar JavaScript widget is rendered inline with the available payment methods (card, STC Pay, Apple Pay).</div>
+</div>
+<div class="workflow-step">
+    <div class="step-num">3</div>
+    <div class="step-text"><strong>Customer completes payment</strong> inside the modal without leaving the page — on Apple Pay devices, biometric authentication is used.</div>
+</div>
+<div class="workflow-step">
+    <div class="step-num">4</div>
+    <div class="step-text"><strong>Moyasar calls back</strong> to <code>/payment-status-return</code> with the payment result and payment ID.</div>
+</div>
+<div class="workflow-step">
+    <div class="step-num">5</div>
+    <div class="step-text"><strong>Odoo processes the result</strong> — the matching transaction is marked as <em>Done</em>, the invoice is posted (if in draft), and the customer is redirected to the success page.</div>
+</div>
+<div class="workflow-step">
+    <div class="step-num">6</div>
+    <div class="step-text"><strong>On failure</strong>, the transaction is cancelled and the customer sees a clear error page without any unwanted side-effects on the invoice or order.</div>
+</div>
+
+<h2>Configuration</h2>
+
+<div class="config-block">
+    <h3>Step 1 — Activate the Provider</h3>
+    <p>Go to <em>Accounting → Configuration → Payment Providers</em>, find <strong>Moyasar</strong>, and set its state to <strong>Enabled</strong>.</p>
+</div>
+
+<div class="config-block">
+    <h3>Step 2 — Enter Your API Keys</h3>
+    <p>On the Moyasar provider form, paste your <strong>Public Key</strong> and <strong>Secret Key</strong> from the
+    <a href="https://dashboard.moyasar.com" target="_blank">Moyasar Dashboard</a>.
+    Test keys are pre-filled so you can validate the integration before replacing them with live credentials.</p>
+</div>
+
+<div class="config-block">
+    <h3>Step 3 — Apple Pay (optional)</h3>
+    <ul>
+        <li>Register your domain in the Moyasar dashboard under <em>Apple Pay → Domain Registration</em>.</li>
+        <li>Download the <code>apple-developer-merchantid-domain-association</code> file provided by Moyasar.</li>
+        <li>Upload the file in the <strong>Apple Pay File</strong> field on the provider form.</li>
+        <li>Odoo automatically serves it at <code>/.well-known/apple-developer-merchantid-domain-association</code>.</li>
+    </ul>
+</div>
+
+<div class="config-block">
+    <h3>Step 4 — Enable Payment Methods</h3>
+    <p>In the provider form, ensure <strong>Credit Card</strong> is enabled. STC Pay and Apple Pay are activated
+    automatically when available for the customer's device and region.</p>
+</div>
+
+<h2>Dependencies</h2>
+
+<table class="dep-table">
+    <tr><th>Dependency</th><th>Type</th><th>Purpose</th></tr>
+    <tr><td><code>base</code></td><td>Odoo module</td><td>Core Odoo framework</td></tr>
+    <tr><td><code>website_sale</code></td><td>Odoo module</td><td>E-commerce checkout integration</td></tr>
+    <tr><td><code>sale</code></td><td>Odoo module</td><td>Sales order portal payments</td></tr>
+    <tr><td><code>moyasar</code></td><td>Python package</td><td>Official Moyasar Python SDK (v0.6.5)</td></tr>
+</table>
+
+<div class="note">
+    <strong>Installation note:</strong> Install the Moyasar Python package before activating this module:
+    <br/><code>pip install moyasar==0.6.5</code>
+    <br/>This is also listed in the module's <code>requirements.txt</code> for automated deployment environments.
+</div>
+
+<h2>Technical Overview</h2>
+
+<ul>
+    <li><strong>Payment Provider Model</strong> (<code>payment.provider</code>) — extended with Moyasar public/secret key fields and Apple Pay file storage.</li>
+    <li><strong>Payment Transaction Model</strong> (<code>payment.transaction</code>) — stores the Moyasar payment ID returned at callback for audit and reconciliation.</li>
+    <li><strong>HTTP Controller</strong> — handles the payment callback (<code>/payment-status-return</code>), frontend configuration endpoint (<code>/get/moyasar/order</code>), and Apple Pay domain file (<code>/.well-known/…</code>).</li>
+    <li><strong>Frontend JavaScript</strong> — patches Odoo's <code>PaymentForm</code> widget to intercept Moyasar flows and render the Moyasar JS widget inside a Bootstrap modal.</li>
+    <li><strong>Odoo Version:</strong> 19.0</li>
+    <li><strong>CDN:</strong> Moyasar JS/CSS loaded from CDN v1.14.0 (no local bundling required).</li>
+</ul>
+
+<h2>License</h2>
+<p>This module is released under the <strong>Odoo Proprietary License v1 (OPL-1)</strong>.
+See the <code>LICENSE</code> file for full terms.</p>
+
+<h2>Author &amp; Support</h2>
+<p>
+    Developed and maintained by <strong>MUK IT</strong>.<br/>
+    Website: <a href="https://www.mukit.at/" target="_blank">www.mukit.at</a><br/>
+    Support: <a href="mailto:support@mukit.at">support@mukit.at</a>
+</p>
+
+</body>
+</html>

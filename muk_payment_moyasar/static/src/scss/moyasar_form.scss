@@ -1,0 +1,26 @@
+.moyasar-modal {
+    .modal-header {
+        padding: 0;
+
+        .close-moyasar-form {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            align-items: center;
+            width: 29px;
+            height: 29px;
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+@media (min-width: 576px) {
+    #quote_content {
+        #modalaccept {
+            .modal-body {
+                -webkit-transform: unset;
+            }
+        }
+    }
+}

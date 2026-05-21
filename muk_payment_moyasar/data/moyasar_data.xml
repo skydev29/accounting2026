@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="payment_provider_moyasar" model="payment.provider">
+            <field name="name">Moyasar</field>
+            <field name="image_128" type="base64" file="muk_payment_moyasar/static/description/moyasar.png"/>
+            <field name="code">moyasar</field>
+            <field name="redirect_form_view_id" ref="muk_payment_moyasar.moyasar_redirect"/>
+            <field name="module_id" ref="base.module_muk_payment_moyasar"/>
+            <field name="support_refund">False</field>
+            <field name="support_tokenization">False</field>
+            <!-- Replace with your live keys from the Moyasar dashboard -->
+            <field name="moyasar_public_key">pk_test_hBLzecYqMY34Xz9o4PySx3ha1yWo7GRa9oFBbQbW</field>
+            <field name="moyasar_secret_key">sk_test_ifwqv9ueWezFwrt8BHB4XqcNNFRCT3HqqHC3AEgj</field>
+            <field name="payment_method_ids" eval='[(6, 0, [
+                ref("payment.payment_method_card"),
+                ref("payment.payment_method_rabbit_line_pay"),
+                ref("payment.payment_method_truemoney")])]'/>
+        </record>
+
+        <record id="payment_method_moyasar" model="account.payment.method">
+            <field name="name">Moyasar</field>
+            <field name="code">moyasar</field>
+            <field name="payment_type">inbound</field>
+        </record>
+
+    </data>
+</odoo>

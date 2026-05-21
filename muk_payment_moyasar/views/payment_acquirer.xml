@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_acquirer_form_moyasar" model="ir.ui.view">
+        <field name="name">Moyasar Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//group[@name="provider_credentials"]' position='before'>
+                <div id="moyasar_credentials_info"
+                     invisible="code != 'moyasar'"
+                     class="alert alert-info" role="alert">
+                    Replace <strong>Public Key</strong> and <strong>Secret Key</strong>
+                    with your credentials from the Moyasar dashboard.
+                </div>
+            </xpath>
+            <xpath expr='//group[@name="provider_credentials"]' position='inside'>
+                <group string="Moyasar Credentials"
+                       name="moyasar_credentials"
+                       invisible="code != 'moyasar'">
+                    <field name="moyasar_public_key"/>
+                    <field name="moyasar_secret_key"/>
+                    <field name="apple_pay_file"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
