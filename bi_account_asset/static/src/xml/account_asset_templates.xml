@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bi_account_asset.DeprecLinesToggler">
+        <button
+            type="button"
+            t-att-title="title"
+            t-att-disabled="isDisabled ? 'disabled' : undefined"
+            t-on-click="onClick"
+            t-attf-class="btn btn-sm btn-link fa fa-circle o_deprec_lines_toggler
+                {{ isPosted ? 'o_is_posted' : (hasMove ? 'o_unposted' : '') }}"
+        />
+    </t>
+</templates>

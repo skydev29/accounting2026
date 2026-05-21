@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Deferred Revenue under Accounting > Accounting -->
+    <menuitem
+        id="menu_deferred_revenue_root"
+        name="Deferred Revenue"
+        parent="account.menu_finance_entries"
+        action="action_deferred_revenue"
+        sequence="30"/>
+
+    <!-- Templates under Accounting > Configuration -->
+    <menuitem
+        id="menu_deferred_revenue_template"
+        name="Deferred Revenue Templates"
+        parent="account.menu_finance_configuration"
+        action="action_deferred_revenue_template"
+        sequence="80"
+        groups="account.group_account_manager"/>
+
+</odoo>

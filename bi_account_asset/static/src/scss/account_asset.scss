@@ -1,0 +1,11 @@
+.o_deprec_lines_toggler {
+    color: map-get($theme-colors, 'danger');
+
+    &.o_is_posted {
+        color: map-get($theme-colors, 'success');
+    }
+
+    &.o_unposted {
+        color: map-get($theme-colors, 'warning');
+    }
+}

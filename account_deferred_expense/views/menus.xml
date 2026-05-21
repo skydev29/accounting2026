@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Deferred Expenses under Accounting > Accounting -->
+    <menuitem
+        id="menu_deferred_expense_root"
+        name="Deferred Expenses"
+        parent="account.menu_finance_entries"
+        action="action_deferred_expense"
+        sequence="31"/>
+
+    <!-- Templates under Accounting > Configuration -->
+    <menuitem
+        id="menu_deferred_expense_template"
+        name="Deferred Expense Templates"
+        parent="account.menu_finance_configuration"
+        action="action_deferred_expense_template"
+        sequence="81"
+        groups="account.group_account_manager"/>
+
+</odoo>
