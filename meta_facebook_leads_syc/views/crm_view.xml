@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ════════════════════════════════════════════════════════════════
+     1. CRM LEAD — Facebook Info tab
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_lead_view_form_facebook" model="ir.ui.view">
+    <field name="name">crm.lead.form.facebook</field>
+    <field name="model">crm.lead</field>
+    <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+    <field name="arch" type="xml">
+        <xpath expr='//page[@name="lead"]' position='after'>
+            <page name="facebook_info" string="Facebook Ads"
+                  invisible="not facebook_lead_id">
+                <group>
+                    <!-- Left: origin -->
+                    <group string="Source">
+                        <field name="facebook_page_id"/>
+                        <field name="facebook_form_id"/>
+                        <field name="facebook_date_create" string="Received On"/>
+                        <field name="facebook_is_organic" widget="boolean_toggle"/>
+                    </group>
+                    <!-- Right: campaign attribution -->
+                    <group string="Campaign Attribution">
+                        <field name="facebook_campaign_id"/>
+                        <field name="facebook_adset_id"/>
+                        <field name="facebook_ad_id"/>
+                    </group>
+                </group>
+                <!-- Technical ID — less prominent, below the main groups -->
+                <group>
+                    <group string="Technical">
+                        <field name="facebook_lead_id" string="Facebook Lead ID"/>
+                    </group>
+                </group>
+            </page>
+        </xpath>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     2. CRM.FACEBOOK.PAGE — Search view
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_page_search" model="ir.ui.view">
+    <field name="name">crm.facebook.page.search</field>
+    <field name="model">crm.facebook.page</field>
+    <field name="arch" type="xml">
+        <search string="Facebook Pages">
+            <field name="label" string="Label"/>
+            <field name="name" string="Page ID"/>
+            <separator/>
+            <filter name="has_forms" string="Has Forms"
+                    domain="[('form_count', '>', 0)]"/>
+            <filter name="no_forms" string="No Forms Yet"
+                    domain="[('form_count', '=', 0)]"/>
+        </search>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     3. CRM.FACEBOOK.PAGE — Kanban view
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_page_kanban" model="ir.ui.view">
+    <field name="name">crm.facebook.page.kanban</field>
+    <field name="model">crm.facebook.page</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_small_column" sample="1">
+            <field name="form_count"/>
+            <field name="label"/>
+            <field name="name"/>
+            <templates>
+                <t t-name="card">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="fa fa-facebook-square fa-2x text-primary"/>
+                        <div>
+                            <strong class="d-block">
+                                <field name="label" placeholder="Page Label"/>
+                            </strong>
+                            <span class="text-muted small">
+                                ID: <field name="name"/>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="badge rounded-pill text-bg-primary">
+                            <t t-esc="record.form_count.value"/>
+                            <t t-if="record.form_count.value == 1"> Form</t>
+                            <t t-else=""> Forms</t>
+                        </span>
+                        <button name="get_forms" type="object"
+                                class="btn btn-sm btn-outline-secondary">
+                            <i class="fa fa-refresh"/> Sync
+                        </button>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     4. CRM.FACEBOOK.PAGE — Form view
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_page_form" model="ir.ui.view">
+    <field name="name">crm.facebook.page.form</field>
+    <field name="model">crm.facebook.page</field>
+    <field name="arch" type="xml">
+        <form string="Facebook Page">
+            <header>
+                <button name="get_forms" type="object"
+                        string="Sync Lead Forms"
+                        class="btn-primary"
+                        icon="fa-refresh"/>
+            </header>
+            <sheet>
+                <!-- Smart button -->
+                <div name="button_box" class="oe_button_box">
+                    <button name="action_view_forms" type="object"
+                            class="oe_stat_button" icon="fa-list-alt">
+                        <field name="form_count" widget="statinfo" string="Lead Forms"/>
+                    </button>
+                </div>
+
+                <div class="oe_title">
+                    <h1>
+                        <field name="label" placeholder="Page Label (e.g. My Business Page)"/>
+                    </h1>
+                    <h3 class="text-muted">
+                        <field name="name" placeholder="Facebook Page ID (numeric)"/>
+                    </h3>
+                </div>
+
+                <group>
+                    <group string="Access">
+                        <field name="access_token"
+                               string="Page Access Token"
+                               password="True"
+                               placeholder="Paste your Page Access Token here"/>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page name="forms" string="Lead Forms">
+                        <field name="form_ids" mode="list" nolabel="1">
+                            <list string="Lead Forms" create="0"
+                                  decoration-warning="not team_id">
+                                <field name="name"/>
+                                <field name="team_id"/>
+                                <field name="lead_count" string="Leads" optional="show"/>
+                                <field name="date_retrieval" string="Fetch Leads After" optional="show"/>
+                                <field name="facebook_form_id" string="Form ID" optional="hide"/>
+                                <field name="campaign_id" optional="hide"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     5. CRM.FACEBOOK.PAGE — List view
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_page_list" model="ir.ui.view">
+    <field name="name">crm.facebook.page.list</field>
+    <field name="model">crm.facebook.page</field>
+    <field name="arch" type="xml">
+        <list string="Facebook Pages">
+            <field name="label" string="Page Name"/>
+            <field name="name" string="Page ID"/>
+            <field name="form_count" string="Forms"/>
+        </list>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     6. CRM.FACEBOOK.PAGE — Action + Menu
+════════════════════════════════════════════════════════════════ -->
+<record model="ir.actions.act_window" id="action_crm_facebook_page">
+    <field name="name">Facebook Pages</field>
+    <field name="res_model">crm.facebook.page</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="search_view_id" ref="crm_facebook_page_search"/>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Connect your first Facebook Page
+        </p>
+        <p>
+            Go to <strong>Settings → Facebook Lead Ads</strong> and click
+            <strong>Get Pages</strong> to import your pages automatically,
+            or create one manually by entering the Page ID and Access Token.
+        </p>
+    </field>
+</record>
+
+<menuitem
+    id="menu_crm_facebook_page"
+    name="Facebook Pages"
+    parent="crm.menu_crm_config_lead"
+    sequence="100"
+    action="action_crm_facebook_page"
+    groups="sales_team.group_sale_manager"/>
+
+<!-- ════════════════════════════════════════════════════════════════
+     7. CRM.FACEBOOK.FORM — Search view
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_form_search" model="ir.ui.view">
+    <field name="name">crm.facebook.form.search</field>
+    <field name="model">crm.facebook.form</field>
+    <field name="arch" type="xml">
+        <search string="Facebook Lead Forms">
+            <field name="name"/>
+            <field name="page_id"/>
+            <field name="team_id"/>
+            <filter name="no_team" string="No Sales Team"
+                    domain="[('team_id', '=', False)]"/>
+            <filter name="never_synced" string="Never Synced"
+                    domain="[('date_retrieval', '=', False)]"/>
+            <filter string="Page" name="group_page"
+                    context="{'group_by': 'page_id'}"/>
+            <filter string="Sales Team" name="group_team"
+                    context="{'group_by': 'team_id'}"/>
+            <filter string="Campaign" name="group_campaign"
+                    context="{'group_by': 'campaign_id'}"/>
+        </search>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     8. CRM.FACEBOOK.FORM — Form view
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_form_form" model="ir.ui.view">
+    <field name="name">crm.facebook.form.form</field>
+    <field name="model">crm.facebook.form</field>
+    <field name="arch" type="xml">
+        <form string="Facebook Lead Form">
+            <header>
+                <button name="action_sync_leads" type="object"
+                        string="Sync Leads Now"
+                        class="btn-primary"
+                        icon="fa-download"/>
+                <button name="get_fields" type="object"
+                        string="Refresh Fields"
+                        icon="fa-refresh"/>
+                <button name="action_guess_mapping" type="object"
+                        string="Auto-Map Fields"
+                        icon="fa-magic"/>
+            </header>
+            <sheet>
+                <div name="button_box" class="oe_button_box">
+                    <button name="action_view_leads" type="object"
+                            class="oe_stat_button" icon="fa-users">
+                        <field name="lead_count" widget="statinfo" string="Leads"/>
+                    </button>
+                </div>
+
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" placeholder="Form Name"/>
+                    </h1>
+                </div>
+
+                <group>
+                    <group string="Facebook Source">
+                        <field name="page_id" readonly="1"/>
+                        <field name="facebook_form_id" readonly="1" string="Form ID"/>
+                    </group>
+                    <group string="CRM Assignment">
+                        <field name="team_id"/>
+                        <field name="date_retrieval" string="Fetch Leads After"
+                               help="Only leads created after this date/time are imported. Updated automatically after each successful sync."/>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page name="tracking" string="UTM Tracking">
+                        <div class="alert alert-info mb-3" role="alert">
+                            <i class="fa fa-info-circle me-1"/>
+                            These values are applied to every lead imported from this form.
+                            If a lead already carries its own campaign or ad data from Facebook,
+                            that data takes precedence.
+                        </div>
+                        <group>
+                            <group>
+                                <field name="campaign_id"/>
+                                <field name="source_id"/>
+                            </group>
+                            <group>
+                                <field name="medium_id"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page name="mapping" string="Field Mapping">
+                        <div class="alert alert-light mb-3 d-flex align-items-start gap-2" role="status">
+                            <i class="fa fa-lightbulb-o text-warning mt-1"/>
+                            <span>
+                                Click <strong>Refresh Fields</strong> to reload questions
+                                from Facebook, then use <strong>Auto-Map Fields</strong>
+                                or the <i class="fa fa-magic"/> button per row to suggest
+                                the best matching Odoo field.
+                            </span>
+                        </div>
+                        <field name="mappings" nolabel="1">
+                            <list editable="bottom" decoration-warning="not odoo_field">
+                                <field name="name" string="Question Label" optional="show"/>
+                                <field name="facebook_field" string="Facebook Key"/>
+                                <field name="odoo_field" string="Odoo Field"/>
+                                <button name="action_guess_mapping"
+                                        type="object"
+                                        icon="fa-magic"
+                                        title="Suggest mapping"
+                                        invisible="odoo_field"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     9. CRM.FACEBOOK.FORM — List view
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_form_list" model="ir.ui.view">
+    <field name="name">crm.facebook.form.list</field>
+    <field name="model">crm.facebook.form</field>
+    <field name="arch" type="xml">
+        <list string="Facebook Lead Forms"
+              decoration-warning="not team_id">
+            <field name="name"/>
+            <field name="page_id"/>
+            <field name="team_id" optional="show"/>
+            <field name="lead_count" string="Leads" optional="show"/>
+            <field name="campaign_id" optional="show"/>
+            <field name="date_retrieval" string="Fetch Leads After" optional="show"/>
+            <field name="facebook_form_id" string="Form ID" optional="hide"/>
+        </list>
+    </field>
+</record>
+
+<!-- ════════════════════════════════════════════════════════════════
+     10. CRM.FACEBOOK.FORM — Action + Menu
+════════════════════════════════════════════════════════════════ -->
+<record model="ir.actions.act_window" id="action_crm_facebook_form">
+    <field name="name">Facebook Lead Forms</field>
+    <field name="res_model">crm.facebook.form</field>
+    <field name="view_mode">list,form</field>
+    <field name="search_view_id" ref="crm_facebook_form_search"/>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            No lead forms yet
+        </p>
+        <p>
+            Open a <strong>Facebook Page</strong>, click <strong>Sync Lead Forms</strong>,
+            and all active forms will appear here automatically.
+        </p>
+    </field>
+</record>
+
+<menuitem
+    id="menu_crm_facebook_form"
+    name="Facebook Forms"
+    parent="crm.menu_crm_config_lead"
+    sequence="101"
+    action="action_crm_facebook_form"
+    groups="sales_team.group_sale_manager"/>
+
+<!-- ════════════════════════════════════════════════════════════════
+     11. CRM.FACEBOOK.FORM.MAPPING — Views + Action + Menu
+════════════════════════════════════════════════════════════════ -->
+<record id="crm_facebook_form_mapping_form" model="ir.ui.view">
+    <field name="name">crm.facebook.form.mapping.form</field>
+    <field name="model">crm.facebook.form.mapping</field>
+    <field name="arch" type="xml">
+        <form string="Default Field Mapping">
+            <sheet>
+                <group>
+                    <field name="facebook_field" string="Facebook Question Key"/>
+                    <field name="odoo_field" string="Odoo Lead Field"/>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="crm_facebook_form_mapping_list" model="ir.ui.view">
+    <field name="name">crm.facebook.form.mapping.list</field>
+    <field name="model">crm.facebook.form.mapping</field>
+    <field name="arch" type="xml">
+        <list string="Default Field Mappings" editable="bottom">
+            <field name="facebook_field" string="Facebook Question Key"/>
+            <field name="odoo_field" string="Odoo Lead Field"/>
+        </list>
+    </field>
+</record>
+
+<record model="ir.actions.act_window" id="action_crm_facebook_form_mapping">
+    <field name="name">Default Field Mappings</field>
+    <field name="res_model">crm.facebook.form.mapping</field>
+    <field name="view_mode">list,form</field>
+    <field name="view_id" ref="crm_facebook_form_mapping_list"/>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            No default mappings defined
+        </p>
+        <p>
+            Default mappings are applied automatically when you run
+            <strong>Sync Fields from Facebook</strong> on any lead form.
+            Add common Facebook field keys here to save time.
+        </p>
+    </field>
+</record>
+
+<menuitem
+    id="menu_crm_facebook_form_mapping"
+    name="Default Mappings"
+    parent="crm.menu_crm_config_lead"
+    sequence="102"
+    action="action_crm_facebook_form_mapping"
+    groups="sales_team.group_sale_manager"/>
+
+</data>
+</odoo>
