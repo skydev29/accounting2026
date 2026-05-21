@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_internal_transfer_manager,account.internal.transfer manager,model_account_internal_transfer,account.group_account_manager,1,1,1,1
-access_internal_transfer_user,account.internal.transfer user,model_account_internal_transfer,account.group_account_user,1,1,0,0
-access_internal_transfer_base,account.internal.transfer base user,model_account_internal_transfer,base.group_user,1,0,0,0
