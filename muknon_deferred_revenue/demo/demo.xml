@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="demo_deferred_revenue_01" model="muknon.deferred.revenue">
+            <field name="name">Annual SaaS Subscription Q1 2026</field>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="total_amount">12000.00</field>
+            <field name="date_start">2026-01-01</field>
+            <field name="date_end">2026-12-31</field>
+            <field name="description">
+                Annual subscription fee received upfront. Revenue to be
+                recognised monthly over the subscription period.
+            </field>
+        </record>
+    </data>
+</odoo>

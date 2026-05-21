@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_deferred_expense_template_user,account.deferred.expense.template user,model_account_deferred_expense_template,account.group_account_user,1,0,0,0
-access_deferred_expense_template_manager,account.deferred.expense.template manager,model_account_deferred_expense_template,account.group_account_manager,1,1,1,1
-access_deferred_expense_user,account.deferred.expense user,model_account_deferred_expense,account.group_account_user,1,1,1,0
-access_deferred_expense_manager,account.deferred.expense manager,model_account_deferred_expense,account.group_account_manager,1,1,1,1
-access_deferred_expense_line_user,account.deferred.expense.line user,model_account_deferred_expense_line,account.group_account_user,1,1,1,0
-access_deferred_expense_line_manager,account.deferred.expense.line manager,model_account_deferred_expense_line,account.group_account_manager,1,1,1,1

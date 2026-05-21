@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_deferred_revenue_template_user,account.deferred.revenue.template user,model_account_deferred_revenue_template,account.group_account_user,1,0,0,0
-access_deferred_revenue_template_manager,account.deferred.revenue.template manager,model_account_deferred_revenue_template,account.group_account_manager,1,1,1,1
-access_deferred_revenue_user,account.deferred.revenue user,model_account_deferred_revenue,account.group_account_user,1,1,1,0
-access_deferred_revenue_manager,account.deferred.revenue manager,model_account_deferred_revenue,account.group_account_manager,1,1,1,1
-access_deferred_revenue_line_user,account.deferred.revenue.line user,model_account_deferred_revenue_line,account.group_account_user,1,1,1,0
-access_deferred_revenue_line_manager,account.deferred.revenue.line manager,model_account_deferred_revenue_line,account.group_account_manager,1,1,1,1

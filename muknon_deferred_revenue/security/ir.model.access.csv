@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deferred_revenue_template_user,muknon.deferred.revenue.template user,model_muknon_deferred_revenue_template,account.group_account_user,1,0,0,0
+access_deferred_revenue_template_manager,muknon.deferred.revenue.template manager,model_muknon_deferred_revenue_template,account.group_account_manager,1,1,1,1
+access_deferred_revenue_user,muknon.deferred.revenue user,model_muknon_deferred_revenue,account.group_account_user,1,1,1,0
+access_deferred_revenue_manager,muknon.deferred.revenue manager,model_muknon_deferred_revenue,account.group_account_manager,1,1,1,1
+access_deferred_revenue_line_user,muknon.deferred.revenue.line user,model_muknon_deferred_revenue_line,account.group_account_user,1,1,1,0
+access_deferred_revenue_line_manager,muknon.deferred.revenue.line manager,model_muknon_deferred_revenue_line,account.group_account_manager,1,1,1,1
