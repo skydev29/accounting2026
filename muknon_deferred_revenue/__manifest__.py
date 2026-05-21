@@ -17,6 +17,8 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'price': 30.0,
+    'currency': 'USD',
     'installable': True,
     'application': False,
     'auto_install': False,
