@@ -13,7 +13,7 @@
     ),
     'author': 'MUK Software',
     'website': 'https://www.muksoft.som/',
-    'support': 'support@mukit.at',
+    'support': 'skymuknon@gmail.com',
     'maintainers': ['muk-smart'],
     'depends': ['base', 'website_sale', 'sale'],
     'data': [
