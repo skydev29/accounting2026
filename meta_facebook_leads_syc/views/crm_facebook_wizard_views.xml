@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="crm_facebook_setup_wizard_form" model="ir.ui.view">
+    <field name="name">crm.facebook.setup.wizard.form</field>
+    <field name="model">crm.facebook.setup.wizard</field>
+    <field name="arch" type="xml">
+        <form string="Facebook Lead Ads — Setup Wizard">
+
+            <!-- ── Step progress bar (hidden on done screen) ───────── -->
+            <div class="border-bottom pb-3 mb-4" invisible="step == 4">
+                <div class="d-flex justify-content-center align-items-start gap-4">
+
+                    <!-- 1 Connect -->
+                    <div class="text-center" style="min-width:4rem">
+                        <div class="badge rounded-pill text-bg-primary px-3 py-2"
+                             invisible="step != 1">1</div>
+                        <div class="badge rounded-pill text-bg-success px-3 py-2"
+                             invisible="step &lt;= 1">✓</div>
+                        <div class="small mt-1 fw-bold" invisible="step != 1">Connect</div>
+                        <div class="small mt-1 text-muted" invisible="step == 1">Connect</div>
+                    </div>
+
+                    <div class="text-muted mt-2">›</div>
+
+                    <!-- 2 Token -->
+                    <div class="text-center" style="min-width:4rem">
+                        <div class="badge rounded-pill text-bg-primary px-3 py-2"
+                             invisible="step != 2">2</div>
+                        <div class="badge rounded-pill text-bg-success px-3 py-2"
+                             invisible="step &lt;= 2">✓</div>
+                        <div class="badge rounded-pill text-bg-light text-secondary px-3 py-2"
+                             invisible="step &gt;= 2">2</div>
+                        <div class="small mt-1 fw-bold" invisible="step != 2">Token</div>
+                        <div class="small mt-1 text-muted" invisible="step == 2">Token</div>
+                    </div>
+
+                    <div class="text-muted mt-2">›</div>
+
+                    <!-- 3 Import -->
+                    <div class="text-center" style="min-width:4rem">
+                        <div class="badge rounded-pill text-bg-primary px-3 py-2"
+                             invisible="step != 3">3</div>
+                        <div class="badge rounded-pill text-bg-success px-3 py-2"
+                             invisible="step &lt;= 3">✓</div>
+                        <div class="badge rounded-pill text-bg-light text-secondary px-3 py-2"
+                             invisible="step &gt;= 3">3</div>
+                        <div class="small mt-1 fw-bold" invisible="step != 3">Import</div>
+                        <div class="small mt-1 text-muted" invisible="step == 3">Import</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- STEP 1 — Connection method                            -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <div invisible="step != 1">
+                <h5 class="mb-3">
+                    <i class="fa fa-facebook-square me-2 text-primary"/>
+                    Choose how to connect
+                </h5>
+
+                <field name="method" widget="radio" class="mb-3"/>
+
+                <!-- Own app credentials -->
+                <div class="border rounded p-3 mb-3" invisible="method != 'own'">
+                    <p class="text-muted small mb-3">
+                        Create a Facebook App at
+                        <a href="https://developers.facebook.com/apps" target="_blank">
+                            developers.facebook.com
+                        </a>,
+                        add the <strong>Marketing API</strong> product, complete App Review,
+                        then enter your credentials below.
+                    </p>
+                    <group>
+                        <field name="app_id" placeholder="e.g. 1234567890123456"/>
+                        <field name="app_secret" password="True" placeholder="App Secret"/>
+                        <field name="api_version" placeholder="v21.0"/>
+                    </group>
+                    <div class="mt-3" invisible="not app_id">
+                        <button name="action_authorize_own" type="object"
+                                string="Authorise with Facebook"
+                                icon="fa-external-link"
+                                class="btn btn-primary btn-sm"/>
+                        <span class="text-muted small ms-2">
+                            Opens Facebook OAuth in a new tab — copy the token from the URL.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Shared connector -->
+                <div class="border rounded p-3 mb-3" invisible="method != 'shared'">
+                    <div class="alert alert-info mb-3" role="alert">
+                        <i class="fa fa-info-circle me-1"/>
+                        Use your organisation's pre-approved Facebook App — no App Review required.
+                        Click below to open Facebook OAuth in a new tab.
+                    </div>
+                    <button name="action_authorize_shared" type="object"
+                            string="Connect with Shared Connector"
+                            icon="fa-external-link"
+                            class="btn btn-primary btn-sm"/>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- STEP 2 — Access Token                                 -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <div invisible="step != 2">
+                <h5 class="mb-3">
+                    <i class="fa fa-key me-2"/>
+                    Paste your Access Token
+                </h5>
+                <div class="alert alert-light d-flex align-items-start gap-2 mb-3" role="status">
+                    <i class="fa fa-lightbulb-o text-warning mt-1"/>
+                    <span>
+                        After the Facebook OAuth page redirects you back,
+                        copy the <code>access_token</code> value from the URL
+                        and paste it in the field below.
+                    </span>
+                </div>
+                <group>
+                    <field name="access_token" password="True"
+                           placeholder="Paste your long-lived User Access Token here"
+                           required="step == 2"/>
+                </group>
+                <div class="mt-3" invisible="method != 'own' or not app_id">
+                    <span class="text-muted small">Haven't authorised yet?</span>
+                    <button name="action_authorize_own" type="object"
+                            string="Authorise with Facebook"
+                            icon="fa-external-link"
+                            class="btn btn-outline-primary btn-sm ms-2"/>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- STEP 3 — Import Pages                                 -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <div invisible="step != 3">
+                <h5 class="mb-3">
+                    <i class="fa fa-cloud-download me-2"/>
+                    Import your Facebook Pages
+                </h5>
+                <div class="alert alert-info mb-3" role="alert">
+                    <i class="fa fa-info-circle me-1"/>
+                    Click <strong>Import Pages &amp; Finish</strong> to fetch all Facebook Pages
+                    linked to your access token. Each page will appear under
+                    <strong>CRM → Configuration → Facebook Pages</strong>, where you can
+                    sync lead forms and assign sales teams.
+                </div>
+                <p class="text-muted small">
+                    Pages that already exist in Odoo will be skipped.
+                </p>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- STEP 4 — Done                                         -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <div invisible="step != 4" class="text-center py-4">
+                <i class="fa fa-check-circle fa-5x text-success mb-3"/>
+                <h4 class="mb-2">Setup Complete!</h4>
+                <p class="text-muted mb-1">
+                    <strong><field name="pages_imported" readonly="1" nolabel="1"/></strong>
+                    Facebook Page(s) imported.
+                </p>
+                <p class="text-muted small">
+                    Open <strong>Facebook Pages</strong> to sync lead forms
+                    and assign sales teams to start receiving leads.
+                </p>
+            </div>
+
+            <!-- ── Footer ─────────────────────────────────────────── -->
+            <footer>
+                <button string="← Back" name="action_back" type="object"
+                        class="btn-secondary"
+                        invisible="step &lt;= 1 or step == 4"/>
+                <button string="Next →" name="action_next" type="object"
+                        class="btn-primary"
+                        invisible="step &gt;= 3"/>
+                <button string="Import Pages &amp; Finish" name="action_import_pages"
+                        type="object" class="btn-primary"
+                        invisible="step != 3"/>
+                <button string="Open Facebook Pages →" name="action_go_to_pages"
+                        type="object" class="btn-success"
+                        invisible="step != 4"/>
+                <button string="Cancel" special="cancel" invisible="step == 4"/>
+                <button string="Close" special="cancel" invisible="step != 4"/>
+            </footer>
+
+        </form>
+    </field>
+</record>
+
+</odoo>

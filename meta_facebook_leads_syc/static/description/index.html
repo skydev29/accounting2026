@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #333; margin: 0; padding: 0; background: #fff; }
+        .banner img { width: 100%; max-height: 300px; object-fit: cover; display: block; }
+        .section { max-width: 960px; margin: 40px auto; padding: 0 24px; }
+        h1 { font-size: 2.2rem; color: #1a1a1a; margin-bottom: 8px; }
+        h2 { font-size: 1.4rem; color: #1877f2; border-bottom: 2px solid #1877f2; padding-bottom: 6px; margin-top: 48px; margin-bottom: 20px; }
+        h3 { font-size: 1.05rem; color: #222; margin: 0 0 6px; }
+        h4 { font-size: 0.93rem; margin: 0 0 10px; color: #1877f2; border-bottom: 1px solid #dce3f0; padding-bottom: 6px; }
+        p, li { font-size: 0.97rem; line-height: 1.75; color: #444; }
+        ul { padding-left: 22px; }
+        li { margin-bottom: 6px; }
+        code { background: #f0f4ff; color: #1877f2; padding: 1px 5px; border-radius: 3px; font-size: 0.88rem; }
+        a { color: #1877f2; }
+        hr { border: none; border-top: 1px solid #eef0f5; margin: 48px 0; }
+
+        .badge-row { margin: 14px 0; }
+        .badge { display: inline-block; background: #e7f0fd; color: #1877f2; border-radius: 4px; padding: 3px 10px; font-size: 0.82rem; margin: 3px 2px; font-weight: 600; }
+
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; margin-top: 16px; }
+        .feature-card { border: 1px solid #e4e8f0; border-radius: 10px; padding: 20px; background: #f8faff; }
+        .feature-card h3 { color: #1877f2; font-size: 0.97rem; }
+        .feature-card p { margin: 0; font-size: 0.9rem; color: #555; }
+        .feature-icon { font-size: 1.4rem; margin-bottom: 8px; }
+
+        .screenshot { margin: 28px 0; }
+        .screenshot img { width: 100%; border: 1px solid #dce3f0; border-radius: 8px; box-shadow: 0 3px 12px rgba(0,0,0,.08); display: block; }
+        .screenshot figcaption { text-align: center; font-size: 0.84rem; color: #888; margin-top: 8px; }
+
+        .wizard-steps { margin: 24px 0; }
+        .wizard-step { display: flex; gap: 20px; margin-bottom: 28px; align-items: flex-start; }
+        .wizard-step-num { min-width: 38px; height: 38px; background: #1877f2; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+        .wizard-step-num.done { background: #28a745; }
+        .wizard-step-body h3 { margin: 0 0 6px; font-size: 1rem; }
+        .wizard-step-body p { margin: 0 0 6px; font-size: 0.92rem; color: #555; }
+        .wizard-step-body ul { margin: 6px 0 0; padding-left: 18px; }
+        .wizard-step-body li { font-size: 0.9rem; color: #555; margin-bottom: 3px; }
+
+        .note  { background: #fff8e1; border-left: 4px solid #ffc107; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.92rem; }
+        .tip   { background: #e8f5e9; border-left: 4px solid #43a047; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.92rem; }
+        .info  { background: #e3f2fd; border-left: 4px solid #1877f2; padding: 14px 18px; border-radius: 4px; margin: 20px 0; font-size: 0.92rem; }
+
+        .field-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        .field-group { background: #f8faff; border: 1px solid #e4e8f0; border-radius: 8px; padding: 16px; }
+        .field-group ul { margin: 0; padding-left: 16px; }
+        .field-group li { font-size: 0.88rem; margin-bottom: 4px; }
+
+        @media (max-width: 600px) {
+            .field-cols { grid-template-columns: 1fr; }
+            .features { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="banner">
+    <img src="banner.png" alt="Facebook Lead Ads Sync for Odoo 19"/>
+</div>
+
+<div class="section">
+    <h1>Facebook Lead Ads Sync</h1>
+    <p>
+        Automatically import Facebook Lead Ads into your Odoo 19 CRM pipeline &mdash; no CSV exports,
+        no manual copy-paste, no missed leads. Connect your Facebook Pages through a guided
+        setup wizard, map form fields once, and every new lead arrives directly in Odoo with
+        full campaign attribution and UTM tracking.
+    </p>
+    <div class="badge-row">
+        <span class="badge">Odoo 19</span>
+        <span class="badge">CRM</span>
+        <span class="badge">Facebook Lead Ads</span>
+        <span class="badge">UTM Attribution</span>
+        <span class="badge">Auto-Sync</span>
+        <span class="badge">Multi-Page</span>
+        <span class="badge">Multi-Form</span>
+    </div>
+
+    <h2>Key Features</h2>
+    <div class="features">
+        <div class="feature-card">
+            <div class="feature-icon">&#128260;</div>
+            <h3>Automatic Hourly Sync</h3>
+            <p>A built-in scheduled action polls every configured lead form each hour. New submissions appear in Odoo CRM within minutes &mdash; hands-free.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#129497;</div>
+            <h3>Guided Setup Wizard</h3>
+            <p>A 3-step dialog walks you from OAuth authorisation to imported pages in under two minutes. No developer knowledge required.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#128101;</div>
+            <h3>Flexible Field Mapping</h3>
+            <p>Auto-Map Fields handles name, email, phone, company, and job title out of the box. Every other Facebook question can be mapped to any CRM lead field.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#127919;</div>
+            <h3>Full UTM Attribution</h3>
+            <p>Captures the Campaign, Ad Set, and Ad that generated each lead &mdash; so your team can report ROI without leaving Odoo.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#128196;</div>
+            <h3>Multiple Pages &amp; Forms</h3>
+            <p>Connect unlimited Facebook Pages. Each page can carry multiple lead forms, each with its own mapping, sales team, and UTM defaults.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#128274;</div>
+            <h3>Secure Credential Storage</h3>
+            <p>App secrets and access tokens are stored as masked password fields and are never exposed via the UI or RPC once saved.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#9889;</div>
+            <h3>On-Demand Sync</h3>
+            <p>Don't want to wait for the cron? Hit <strong>Sync Leads Now</strong> on any individual form to pull fresh leads instantly.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#128736;</div>
+            <h3>Reliable API Calls</h3>
+            <p>Automatic retry with exponential back-off and a PostgreSQL advisory lock prevent duplicate imports even when cron runs overlap.</p>
+        </div>
+    </div>
+
+    <hr/>
+
+    <h2>&#128640; Getting Started &mdash; Setup Wizard</h2>
+    <p>
+        Navigate to <strong>Settings &#8594; Facebook Lead Ads &#8594; Setup Wizard</strong> to launch the
+        wizard. It guides you through three steps: Connect &#8594; Token &#8594; Import.
+    </p>
+
+    <div class="wizard-steps">
+
+        <div class="wizard-step">
+            <div class="wizard-step-num">1</div>
+            <div class="wizard-step-body">
+                <h3>Connect &mdash; Choose your authorisation method</h3>
+                <p>Select how you want to authenticate with Facebook:</p>
+                <ul>
+                    <li><strong>My own Facebook App</strong> &mdash; Enter your App ID, App Secret, and optionally a custom Graph API version, then click <em>Authorise with Facebook</em>. A Facebook OAuth tab opens; once authorised you will be redirected back.</li>
+                    <li><strong>Shared Connector</strong> &mdash; Uses a pre-approved Facebook App managed by your organisation &mdash; no App Review required. Click <em>Connect with Shared Connector</em>.</li>
+                </ul>
+                <p>Click <strong>Next &#8594;</strong> to proceed.</p>
+            </div>
+        </div>
+
+        <div class="wizard-step">
+            <div class="wizard-step-num">2</div>
+            <div class="wizard-step-body">
+                <h3>Token &mdash; Paste your Access Token</h3>
+                <p>
+                    After the Facebook OAuth redirect, copy the <code>access_token</code> value
+                    from the browser URL and paste it into the field shown. The token is stored
+                    encrypted and never displayed in full again.
+                </p>
+                <p>If you have not authorised yet, a shortcut button re-opens the OAuth page without losing your progress. Click <strong>Next &#8594;</strong> once the token is pasted.</p>
+            </div>
+        </div>
+
+        <div class="wizard-step">
+            <div class="wizard-step-num">3</div>
+            <div class="wizard-step-body">
+                <h3>Import &mdash; Fetch your Facebook Pages</h3>
+                <p>
+                    Click <strong>Import Pages &amp; Finish</strong>. The wizard calls the
+                    Facebook Graph API (<code>me/accounts</code>) and creates a
+                    <em>Facebook Page</em> record in Odoo for every page your token can access.
+                    Pages that already exist are skipped.
+                </p>
+            </div>
+        </div>
+
+        <div class="wizard-step">
+            <div class="wizard-step-num done">&#10003;</div>
+            <div class="wizard-step-body">
+                <h3>Done &mdash; Setup Complete</h3>
+                <p>
+                    A confirmation screen shows how many Facebook Pages were imported.
+                    Click <strong>Open Facebook Pages &#8594;</strong> to jump straight to
+                    <em>CRM &#8594; Configuration &#8594; Facebook Pages</em> and start syncing lead forms.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="screenshot">
+        <figure>
+            <img src="screenshot_01.png" alt="Setup Wizard Step 1 - Connect"/>
+            <figcaption>Step 1 &mdash; Connect: choose My own Facebook App or Shared Connector, enter App ID and Secret, then click Authorise with Facebook.</figcaption>
+        </figure>
+    </div>
+
+    <div class="screenshot">
+        <figure>
+            <img src="screenshot_wizard_step2.png" alt="Setup Wizard Step 2 - Token"/>
+            <figcaption>Step 2 &mdash; Token: paste the <code>access_token</code> from the Facebook OAuth redirect URL.</figcaption>
+        </figure>
+    </div>
+
+    <div class="screenshot">
+        <figure>
+            <img src="screenshot_wizard_step3.png" alt="Setup Wizard Step 3 - Import Pages"/>
+            <figcaption>Step 3 &mdash; Import Pages: click <strong>Import Pages &amp; Finish</strong> to discover all Facebook Pages linked to your token.</figcaption>
+        </figure>
+    </div>
+
+    <div class="tip">
+        <strong>Tip:</strong> If you already configured your App ID previously, the wizard opens
+        directly on Step 2 (Token) so you can update your access token without repeating the
+        credential entry.
+    </div>
+
+    <hr/>
+
+    <h2>&#128196; Facebook Pages</h2>
+    <p>
+        After the wizard, all imported pages appear in
+        <strong>CRM &#8594; Configuration &#8594; Facebook Pages</strong>. Each card shows the page name,
+        its Facebook Page ID, how many lead forms are linked, and a quick-action
+        <strong>Sync Forms</strong> button.
+    </p>
+
+    <div class="screenshot">
+        <figure>
+            <img src="screenshot_02.png" alt="Facebook Pages view"/>
+            <figcaption>Facebook Pages &mdash; each page shows the Page ID, linked form count, and a Sync Forms shortcut.</figcaption>
+        </figure>
+    </div>
+
+    <h3>Page record fields</h3>
+    <div class="field-cols">
+        <div class="field-group">
+            <h4>Identity</h4>
+            <ul>
+                <li><strong>Page Label</strong> &mdash; human-readable name shown in Odoo</li>
+                <li><strong>Page ID</strong> &mdash; the numeric Facebook Page ID</li>
+                <li><strong>Access Token</strong> &mdash; page-level token (masked)</li>
+            </ul>
+        </div>
+        <div class="field-group">
+            <h4>Lead Forms tab</h4>
+            <ul>
+                <li>Inline list of all synced forms</li>
+                <li><em>Leads</em> column &mdash; count of imported CRM leads per form</li>
+                <li><em>Fetch Leads After</em> &mdash; timestamp of last successful sync</li>
+                <li>Click any form row to open the full form configuration</li>
+            </ul>
+        </div>
+    </div>
+
+    <hr/>
+
+    <h2>&#128196; Lead Form Configuration</h2>
+    <p>
+        Open a lead form from the page's <em>Lead Forms</em> tab to configure mapping,
+        sales team assignment, and UTM defaults.
+    </p>
+
+    <h3>Action Buttons</h3>
+    <ul>
+        <li><strong>Sync Leads Now</strong> &mdash; immediately fetches new leads from this form without waiting for the hourly cron.</li>
+        <li><strong>Refresh Fields</strong> &mdash; re-fetches the form's question list from Facebook so new questions appear in the mapping tab.</li>
+        <li><strong>Auto-Map Fields</strong> &mdash; automatically matches common Facebook fields (full name, email, phone number, company name, job title) to the correct Odoo CRM fields.</li>
+    </ul>
+
+    <div class="field-cols">
+        <div class="field-group">
+            <h4>Facebook Source</h4>
+            <ul>
+                <li><strong>Form Name</strong> &mdash; the Facebook lead form name (read-only)</li>
+                <li><strong>Facebook Form ID</strong> &mdash; the internal numeric ID used for API calls</li>
+                <li><strong>Access Token</strong> &mdash; overrides the page token for this form if needed</li>
+                <li><strong>Fetch Leads After</strong> &mdash; only leads created after this date/time are downloaded on the next sync</li>
+            </ul>
+        </div>
+        <div class="field-group">
+            <h4>CRM Assignment</h4>
+            <ul>
+                <li><strong>Sales Team</strong> &mdash; all leads from this form are assigned to this team</li>
+                <li><strong>Responsible</strong> &mdash; default salesperson assigned to each imported lead</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>UTM Tracking tab</h3>
+    <p>
+        Define default UTM values applied to every lead imported from this form when the
+        Facebook payload does not carry its own UTM data. Supports <em>Campaign</em>,
+        <em>Source</em>, and <em>Medium</em>.
+    </p>
+
+    <h3>Field Mapping tab</h3>
+    <p>
+        Each row maps one Facebook form question to an Odoo CRM lead field. Rows are created
+        automatically by <strong>Refresh Fields</strong> and filled in by
+        <strong>Auto-Map Fields</strong>. You can add, edit, or delete rows manually.
+    </p>
+    <ul>
+        <li><strong>Facebook Field Key</strong> &mdash; the question key as returned by the Graph API (e.g. <code>full_name</code>, <code>email</code>)</li>
+        <li><strong>Odoo Field</strong> &mdash; the target field on <code>crm.lead</code> (dropdown of all available fields)</li>
+    </ul>
+
+    <hr/>
+
+    <h2>&#128203; CRM Lead &mdash; Facebook Ads Tab</h2>
+    <p>
+        Every lead imported by this module gets a <strong>Facebook Ads</strong> tab on its CRM
+        form with three information groups:
+    </p>
+
+    <div class="field-cols">
+        <div class="field-group">
+            <h4>Source</h4>
+            <ul>
+                <li><strong>Facebook Page</strong> &mdash; which Page the form belongs to</li>
+                <li><strong>Lead Form</strong> &mdash; the specific form that captured the lead</li>
+                <li><strong>Received On</strong> &mdash; timestamp of the Facebook submission</li>
+                <li><strong>Is Organic</strong> &mdash; True if the lead came through an organic post, not a paid ad</li>
+            </ul>
+        </div>
+        <div class="field-group">
+            <h4>Campaign Attribution</h4>
+            <ul>
+                <li><strong>Campaign</strong> &mdash; Facebook campaign name/ID</li>
+                <li><strong>Ad Set</strong> &mdash; Facebook ad set (audience targeting)</li>
+                <li><strong>Ad</strong> &mdash; specific ad creative that generated the lead</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="field-group" style="margin: 0 0 20px;">
+        <h4>Technical</h4>
+        <ul>
+            <li><strong>Facebook Lead ID</strong> &mdash; the unique numeric ID from Facebook's Graph API; used as a deduplication key to prevent importing the same lead twice.</li>
+        </ul>
+    </div>
+
+    <div class="info">
+        <strong>Deduplication:</strong> If a lead with the same <em>Facebook Lead ID</em> already
+        exists in Odoo, the sync skips it automatically &mdash; you will never get duplicate records
+        regardless of how many times the cron or manual sync runs.
+    </div>
+
+    <hr/>
+
+    <h2>&#9881; Settings &mdash; Facebook Lead Ads</h2>
+    <p>
+        Go to <strong>Settings &#8594; Facebook Lead Ads</strong> to see the connection status and
+        access quick actions at any time.
+    </p>
+
+    <div class="screenshot">
+        <figure>
+            <img src="screenshot_03.png" alt="Settings - Facebook Lead Ads section"/>
+            <figcaption>Settings page &mdash; connection status indicator, Setup Wizard button, Re-import Pages shortcut, and API version override.</figcaption>
+        </figure>
+    </div>
+
+    <ul>
+        <li><strong>Connection status</strong> &mdash; shows a green <em>Connected</em> badge when an access token is stored, or a red <em>Not connected</em> indicator when it is missing.</li>
+        <li><strong>Setup Wizard</strong> button &mdash; re-opens the wizard at any time to update credentials or re-authorise.</li>
+        <li><strong>Re-import Pages</strong> button &mdash; fetches any new Facebook Pages added to your account since the last import (visible only when connected).</li>
+        <li><strong>Graph API Version</strong> &mdash; override the default <code>v21.0</code> if you need to pin to a different Facebook API version.</li>
+    </ul>
+
+    <hr/>
+
+    <h2>&#128295; Technical Notes</h2>
+    <ul>
+        <li>Requires an outbound HTTPS connection from the Odoo server to <code>graph.facebook.com</code>.</li>
+        <li>Facebook Graph API &mdash; default version <strong>v21.0</strong>, configurable in Settings per installation.</li>
+        <li>Incremental sync: the <em>Fetch Leads After</em> timestamp is updated after each successful sync so only new leads are downloaded on subsequent runs.</li>
+        <li>A PostgreSQL advisory lock (<code>pg_try_advisory_xact_lock</code>) prevents duplicate imports when scheduled action runs overlap.</li>
+        <li>All Graph API calls use automatic retry with exponential back-off (up to 3 attempts).</li>
+        <li>Credentials are stored via <code>ir.config_parameter</code> as masked fields &mdash; never exposed in RPC responses.</li>
+        <li>Compatible with <strong>Odoo 19 Community</strong> and <strong>Enterprise</strong>.</li>
+        <li>Dependencies: <code>crm</code>, <code>utm</code>.</li>
+    </ul>
+
+    <div class="note">
+        <strong>Facebook App requirements:</strong> Your Facebook App must be set to
+        <em>Live</em> mode and have passed App Review for the permissions
+        <code>leads_retrieval</code>, <code>pages_manage_ads</code>,
+        <code>pages_read_engagement</code>, and <code>ads_management</code> before it can
+        retrieve leads from production ad accounts. Test/Development mode works for sandbox
+        testing only.
+    </div>
+
+    <hr/>
+
+    <h2>&#128222; Support</h2>
+    <p>
+        For questions, bug reports, or feature requests, contact us at
+        <a href="mailto:info@skymuknon.com">info@skymuknon.com</a>.
+    </p>
+    <p>
+        Please include your Odoo version, module version, and a description of the issue when
+        reaching out &mdash; this helps us respond faster.
+    </p>
+</div>
+
+</body>
+</html>
